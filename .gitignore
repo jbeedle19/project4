@@ -1,0 +1,4 @@
+.DS_Store
+.env
+network/__pycache__
+project4/__pycache__
