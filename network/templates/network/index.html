@@ -1,5 +1,24 @@
 {% extends "network/layout.html" %}
 
 {% block body %}
-    TODO
+    <h1 class="ml-3">All Posts</h1>
+    {% if user.is_authenticated %}
+        <div class="border rounded mx-4 mb-2 p-4">
+            <h3>New Post</h3>
+            <form action="" method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <textarea autofocus class="form-control" name="content" rows="4"></textarea>
+                </div>
+                <input class="btn btn-primary" type="submit" value="Post">
+            </form>
+        </div>
+    {% endif %}
+    <div class="border rounded mx-4 mb-2 p-4">
+        <h3>Post Author</h3>
+        <p>Edit link</p>
+        <p>Content of the post goes here</p>
+        <p>March 18, 2022, 10:23 a.m.</p>
+        <p>🤍/❤️ numOfLikes</p>
+    </div>
 {% endblock %}
