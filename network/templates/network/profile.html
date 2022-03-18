@@ -6,8 +6,8 @@
     {% else %}
         <h1 class="ml-3">{{ profileOwner.username | capfirst }}'s Profile</h1>
         {% if user.is_authenticated and currentUser == False %}
-            <button id="follow" class="ml-5 btn btn-success">Follow</button>
-            <button id ="unfollow" class="ml-5 btn btn-danger">Unfollow</button>
+            <button id="follow" data-id="{{ profileOwner.id }}" class="ml-5 btn btn-success">Follow</button>
+            <button id ="unfollow" data-id="{{ profileOwner.id }}" class="ml-5 btn btn-danger">Unfollow</button>
         {% endif %}
         <h3 class="ml-3">Following - {{ profileOwner.following.count }}</h3>
         <h3 class="ml-3">Followers - {{ profileOwner.followers.count }}</h3>

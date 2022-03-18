@@ -3,8 +3,14 @@ document.addEventListener('DOMContentLoaded', () => {
     // Check that the items exist before adding event listeners to avoid errors
     if (document.querySelector('#follow')) {
         renderFollowBtn();
-        document.querySelector('#follow').addEventListener('click', () => follow);
-        document.querySelector('#unfollow').addEventListener('click', () => unfollow);
+        document.querySelector('#follow').addEventListener('click', (e) => {
+            const userID = e.target.getAttribute('data-id');
+            follow(userID);
+        });
+        document.querySelector('#unfollow').addEventListener('click', (e) => {
+            const userID = e.target.getAttribute('data-id');
+            unfollow(userID);
+        });
     }
     if (document.querySelectorAll('.edit')){
         document.querySelectorAll('.edit').forEach(item => {
