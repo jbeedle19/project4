@@ -61,9 +61,23 @@ def post(request):
 
 
 def profile(request, username):
+    user = request.user
+    try:
+        profileOwner = User.objects.get(username=username)
+        posts = profileOwner.posts.all()
+    except User.DoesNotExist:
+        profileOwner = None
+        posts = None
+
+    if user.username == username:
+        currentUser = True
+    else:
+        currentUser = False
+
     return render(request, "network/profile.html", {
-        'name': username,
-        'posts': ['one', 'two', 'three']
+        'profileOwner': profileOwner,
+        'posts': posts,
+        'currentUser': currentUser
     })
 
 
