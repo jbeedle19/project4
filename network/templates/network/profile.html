@@ -1,0 +1,17 @@
+{% extends "network/layout.html" %}
+
+{% block body %}
+    <h1 class="ml-3">{{ name | capfirst }}'s Profile</h1>
+    <h3 class="ml-3">Following - 10</h3>
+    <h3 class="ml-3">Followers - 4</h3>
+    <h3 class="ml-3">Posts</h3>
+    {% for post in posts %}
+        <div class="border rounded mx-4 mb-2 p-4">
+            <h3>Post Author</h3>
+            <p>Edit link</p>
+            <p>{{ post }}</p>
+            <p>March 18, 2022, 10:23 a.m.</p>
+            <p>🤍/❤️ numOfLikes</p>
+        </div>
+    {% endfor %}
+{% endblock %}

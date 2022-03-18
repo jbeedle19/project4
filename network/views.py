@@ -1,14 +1,23 @@
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 
-from .models import User
+from .models import User, Post, Like
 
 
 def index(request):
-    return render(request, "network/index.html")
+    return render(request, "network/index.html", {
+        'posts': Post.objects.all()
+    })
+
+@login_required(login_url="/login", redirect_field_name=None)
+def following(request):
+    return render(request, "network/following.html", {
+        'posts': ['one', 'two', 'three']
+    })
 
 
 def login_view(request):
@@ -34,6 +43,28 @@ def login_view(request):
 def logout_view(request):
     logout(request)
     return HttpResponseRedirect(reverse("index"))
+
+
+def post(request):
+    content = request.POST['content']
+    user = request.user
+
+    if len(content) > 300:
+        return render(request, "network/error.html", {
+            'message': 'Post is too long, must be 300 characters or less. Please edit your post and try again.'
+        })
+
+    p = Post(user=user, content=content)
+    p.save()
+
+    return HttpResponseRedirect(reverse("index"))
+
+
+def profile(request, username):
+    return render(request, "network/profile.html", {
+        'name': username,
+        'posts': ['one', 'two', 'three']
+    })
 
 
 def register(request):
