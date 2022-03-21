@@ -12,5 +12,7 @@
             <p>{{ post.created }}</p>
             <p>🤍/❤️ {{ post.likes }}</p>
         </div>
+    {% empty %}
+        <h6>The users you follow have not made any posts yet</h6>
     {% endfor %}
 {% endblock %}

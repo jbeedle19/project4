@@ -16,10 +16,20 @@ def index(request):
         'posts': Post.objects.all()
     })
 
+
 @login_required(login_url="/login", redirect_field_name=None)
 def following(request):
+    currentUser = User.objects.get(id=request.user.id)
+    following = currentUser.followers.all()
+    posts = []
+
+    for person in following:
+        allPosts = person.posts.all()
+        for post in allPosts:
+            posts.append(post)
+
     return render(request, "network/following.html", {
-        'posts': ['one', 'two', 'three']
+        'posts': sorted(posts, key=lambda x: x.created, reverse=True)
     })
 
 
@@ -27,10 +37,10 @@ def following(request):
 def follow(request, user_id):
     profileOwner = User.objects.get(id=user_id)
     currentUser = User.objects.get(id=request.user.id)
-    following = profileOwner.following.all()
+    followers = profileOwner.following.all()
 
     if user_id != currentUser.id:
-        if currentUser in following:
+        if currentUser in followers:
             profileOwner.following.remove(currentUser.id)
         else:
             profileOwner.following.add(currentUser.id)
@@ -126,13 +136,3 @@ def register(request):
         return render(request, "network/register.html")
 
 #API Routes
-@csrf_exempt
-@login_required
-def followers(request, user_id):
-    try:
-        user = User.objects.get(id=user_id)
-    except User.DoesNotExist:
-        return JsonResponse({'error': 'User not found.'}, status=404)
-
-    if request.method == 'GET':
-        return JsonResponse(user.serialize())
