@@ -26,13 +26,5 @@ function edit(id) {
         formEl.hidden = true;
     }
 
-    formEl.addEventListener('submit', () => {
-
-        save(id, content, )
-    });
-}
-
-function save(id) {
-    // save the
-    console.log(`saving post with id of ${id}`);
+    // Update handled by form submission/Django
 }

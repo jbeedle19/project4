@@ -135,4 +135,35 @@ def register(request):
     else:
         return render(request, "network/register.html")
 
+
+@login_required(login_url="/login", redirect_field_name=None)
+def update(request, user_id, post_id, page):
+
+    # Make sure person editing is the currentUser and that their id matches the posters id
+    if user_id != request.user.id:
+        return render(request, "network/error.html", {
+            'message': 'You can only edit your own posts and not other users posts'
+        })
+
+    content = request.POST['content']
+
+    # Check that post is not too long
+    if len(content) > 300:
+        return render(request, "network/error.html", {
+            'message': 'Post is too long, must be 300 characters or less. Please edit your post and try again.'
+        })
+
+    # Update post
+    post = Post.objects.get(id=post_id)
+    post.content = content
+    post.save()
+
+    # Reload the page depending on which page they edited from
+    if page == "profile":
+        profileOwner = User.objects.get(id=user_id)
+        return HttpResponseRedirect(reverse(profile, args=[profileOwner.username]))
+    else:
+        return HttpResponseRedirect(reverse("index"))
+
+
 #API Routes

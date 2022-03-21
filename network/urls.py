@@ -11,6 +11,7 @@ urlpatterns = [
     path("logout", views.logout_view, name="logout"),
     path("post", views.post, name="post"),
     path("register", views.register, name="register"),
+    path("update/<int:user_id>/<int:post_id>/<str:page>", views.update, name="update"),
 
     #API Routes
 
