@@ -35,8 +35,13 @@ def following(request):
         for post in allPosts:
             posts.append(post)
 
+    posts.sort(key=lambda x: x.created, reverse=True)
+    paginator = Paginator(posts, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
     return render(request, "network/following.html", {
-        'posts': sorted(posts, key=lambda x: x.created, reverse=True)
+        'page_obj': page_obj
     })
 
 
@@ -100,9 +105,12 @@ def profile(request, username):
     try:
         profileOwner = User.objects.get(username=username)
         posts = profileOwner.posts.all()
+        paginator = Paginator(posts, 10)
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
     except User.DoesNotExist:
         profileOwner = None
-        posts = None
+        page_obj = None
 
     if user.username == username:
         currentUser = True
@@ -111,7 +119,7 @@ def profile(request, username):
 
     return render(request, "network/profile.html", {
         'profileOwner': profileOwner,
-        'posts': posts,
+        'page_obj': page_obj,
         'currentUser': currentUser
     })
 

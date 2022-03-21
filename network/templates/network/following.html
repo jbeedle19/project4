@@ -2,7 +2,7 @@
 
 {% block body %}
     <h1 class="ml-3">Posts From Your Favs</h1>
-    {% for post in posts %}
+    {% for post in page_obj %}
         <div class="border rounded mx-4 mb-2 p-4">
             <h3><a href="{% url 'profile' post.user.username %}">{{ post.user.username }}</a></h3>
             <p>{{ post.content}}</p>
@@ -16,4 +16,22 @@
     {% empty %}
         <h6 class="mt-3 ml-5">You are either not following any users, or the ones you are following have not yet posted. Please check back later!</h6>
     {% endfor %}
+    <div class="pagination my-4 d-flex justify-content-center">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+                <a href="?page=1">&laquo; First</a>
+                <a href="?page={{ page_obj.previous_page_number }}">Previous</a>
+            {% endif %}
+
+            <span class="current">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+            </span>
+
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">Next</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}">Last &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+
 {% endblock %}
