@@ -31,7 +31,11 @@
                     <input class="btn btn-success" type="submit" value="Save">
                 </form>
                 <p>{{ post.created }}</p>
-                <p>🤍/❤️ {{ post.likes}}</p>
+                {% if user in post.user_likes.all %}
+                    <p><span class="btn dislike" data-like="{{ post.id }}">❤️</span><span data-count="{{ post.id }}">{{ post.likes }}</span></p>
+                {% else %}
+                    <p><span class="btn like" data-like="{{ post.id }}">🤍</span><span data-count="{{ post.id }}">{{ post.likes }}</span></p>
+                {% endif %}
             </div>
         {% endfor %}
     {% endif %}

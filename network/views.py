@@ -167,3 +167,39 @@ def update(request, user_id, post_id, page):
 
 
 #API Routes
+@csrf_exempt
+@login_required(login_url="/login", redirect_field_name=None)
+def like(request, post_id):
+    user = User.objects.get(id=request.user.id)
+    post = Post.objects.get(id=post_id)
+
+    like = Like(user=user, post=post)
+    like.liked=True
+
+    post.likes += 1
+    post.user_likes.add(user)
+
+    post.save()
+    like.save()
+
+    # No need to render because JS is handling that
+    return HttpResponse(status=204)
+
+
+@csrf_exempt
+@login_required(login_url="/login", redirect_field_name=None)
+def dislike(request, post_id):
+    user = User.objects.get(id=request.user.id)
+    post = Post.objects.get(id=post_id)
+
+    like = Like(user=user, post=post)
+    like.liked=False
+
+    post.likes -= 1
+    post.user_likes.remove(user)
+
+    post.save()
+    like.save()
+
+    # No need to render because JS is handling that
+    return HttpResponse(status=204)

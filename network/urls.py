@@ -14,6 +14,8 @@ urlpatterns = [
     path("update/<int:user_id>/<int:post_id>/<str:page>", views.update, name="update"),
 
     #API Routes
+    path("like/<int:post_id>", views.like, name="like"),
+    path("dislike/<int:post_id>", views.dislike, name="dislike"),
 
     path("<str:username>", views.profile, name="profile")
 ]
