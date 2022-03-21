@@ -23,6 +23,21 @@ def following(request):
     })
 
 
+@login_required(login_url="/login", redirect_field_name=None)
+def follow(request, user_id):
+    profileOwner = User.objects.get(id=user_id)
+    currentUser = User.objects.get(id=request.user.id)
+    following = profileOwner.following.all()
+
+    if user_id != currentUser.id:
+        if currentUser in following:
+            profileOwner.following.remove(currentUser.id)
+        else:
+            profileOwner.following.add(currentUser.id)
+
+    return HttpResponseRedirect(reverse(profile, args=[profileOwner.username]))
+
+
 def login_view(request):
     if request.method == "POST":
 

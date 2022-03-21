@@ -6,11 +6,14 @@
     {% else %}
         <h1 class="ml-3">{{ profileOwner.username | capfirst }}'s Profile</h1>
         {% if user.is_authenticated and currentUser == False %}
-            <button id="follow" data-id="{{ profileOwner.id }}" class="ml-5 btn btn-success">Follow</button>
-            <button id ="unfollow" data-id="{{ profileOwner.id }}" class="ml-5 btn btn-danger">Unfollow</button>
+            {% if user in profileOwner.following.all %}
+                <a href="{% url 'follow' user_id=profileOwner.id %}" class="ml-5 btn btn-danger">Unfollow</a>
+            {% else %}
+                <a href="{% url 'follow' user_id=profileOwner.id %}" class="ml-5 btn btn-success">Follow</a>
+            {% endif %}
         {% endif %}
-        <h3 class="ml-3">Following - {{ profileOwner.following.count }}</h3>
-        <h3 class="ml-3">Followers - {{ profileOwner.followers.count }}</h3>
+        <h3 class="ml-3">Following - {{ profileOwner.followers.count }}</h3>
+        <h3 class="ml-3">Followers - {{ profileOwner.following.count }}</h3>
         <h3 class="ml-3">Posts</h3>
         {% for post in posts %}
             <div class="border rounded mx-4 mb-2 p-4">
