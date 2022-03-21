@@ -1,6 +1,7 @@
 {% extends "network/layout.html" %}
 
 {% block body %}
+
     <h1 class="ml-3">All Posts</h1>
     {% if user.is_authenticated %}
         <div class="border rounded mx-4 mb-2 p-4">
@@ -14,7 +15,7 @@
             </form>
         </div>
     {% endif %}
-    {% for post in posts %}
+    {% for post in page_obj %}
         <div class="border rounded mx-4 mb-2 p-4">
             <h3><a href="{% url 'profile' post.user.username %}">{{ post.user.username }}</a></h3>
             {% if post.user == request.user %}
@@ -37,4 +38,22 @@
             {% endif %}
         </div>
     {% endfor %}
+    <div class="pagination my-4 d-flex justify-content-center">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+                <a href="?page=1">&laquo; First</a>
+                <a href="?page={{ page_obj.previous_page_number }}">Previous</a>
+            {% endif %}
+
+            <span class="current">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+            </span>
+
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">Next</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}">Last &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+
 {% endblock %}
